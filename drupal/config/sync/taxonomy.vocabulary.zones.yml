@@ -1,0 +1,8 @@
+uuid: 6580149d-dc20-4688-99e0-034cb50670f4
+langcode: en
+status: true
+dependencies: {  }
+name: Zones
+vid: zones
+description: 'Content zones like The Netherlands, France, International etc.'
+weight: 0

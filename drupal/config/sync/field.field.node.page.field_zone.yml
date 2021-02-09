@@ -1,0 +1,29 @@
+uuid: c7124ec7-d0ef-4f36-ab20-55d96302e46a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_zone
+    - node.type.page
+    - taxonomy.vocabulary.zones
+id: node.page.field_zone
+field_name: field_zone
+entity_type: node
+bundle: page
+label: Zone
+description: 'This content will only be available in the selected zone.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      zones: zones
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
