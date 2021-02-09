@@ -1,0 +1,66 @@
+{
+    "name": "burst/eurofiber",
+    "description": "Eurofiber Drupal 9 CMS",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Burst",
+            "email": "developers@burst-digital.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/hechoendrupal/drupal-console.git"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "burst/drupal-distribution": "^3.1",
+        "drupal/core": "9.1.4 as 8.9.2"
+    },
+    "config": {
+        "sort-packages": true,
+        "discard-changes": true,
+        "platform": {
+            "php": "7.4.999",
+            "ext-curl": "7.4.999",
+            "ext-gd": "7.4.999"
+        }
+    },
+    "extra": {
+        "composer-exit-on-patch-failure": true,
+        "installer-paths": {
+            "web/core": [
+                "type:drupal-core"
+            ],
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ],
+            "web/profiles/contrib/{$vendor}-{$name}": [
+                "type:drupal-profile"
+            ],
+            "web/themes/contrib/{$name}": [
+                "type:drupal-theme"
+            ],
+            "drush/contrib/{$name}": [
+                "type:drupal-drush"
+            ]
+        },
+        "patches": {},
+        "enable-patching": true,
+        "drupal-scaffold": {
+            "locations": {
+                "web-root": "web"
+            }
+        }
+    },
+    "replace": {
+        "drupal/drupal": "*"
+    }
+}

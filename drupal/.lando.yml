@@ -1,0 +1,11 @@
+name: eurofiber
+recipe: drupal9
+config:
+  php: '7.4'
+  via: nginx
+  webroot: web
+  database: 'mariadb:10.4'
+
+proxy:
+  appserver_nginx:
+    - cms.eurofiber.com.localhost

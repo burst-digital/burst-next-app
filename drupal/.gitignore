@@ -1,0 +1,8 @@
+.editorconfig
+.gitattributes
+web/INSTALL.txt
+web/README.txt
+web/themes/README.txt
+web/sites/README.txt
+web/profiles/README.txt
+web/modules/README.txt
