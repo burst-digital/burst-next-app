@@ -23,6 +23,7 @@
     "require": {
         "burst/drupal-distribution": "^3.1",
         "drupal/core": "9.1.4 as 8.9.2",
+        "drupal/graphql": "^4.0",
         "drupal/languagefield": "1.x-dev@dev",
         "drupal/replicate": "^1.0",
         "drupal/replicate_ui": "^1.0"
