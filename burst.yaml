@@ -1,0 +1,5 @@
+apps:
+  drupal:
+    hosting:
+      type: platform
+      id: wkat4hxfakljw
