@@ -1,0 +1,22 @@
+uuid: 2143ec41-9ca9-42d3-9419-243d83e6fc41
+langcode: en
+status: true
+dependencies:
+  theme:
+    - burst_theme
+_core:
+  default_config_hash: D_hUB_AW2IvKbVo3lVG-B2KfTsX6xJ-CxfOcRYUnL3E
+id: burst_theme_secondary_local_tasks
+theme: burst_theme
+region: pre_content
+weight: 0
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Secondary tabs'
+  provider: core
+  label_display: '0'
+  primary: false
+  secondary: true
+visibility: {  }

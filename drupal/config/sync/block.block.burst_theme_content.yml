@@ -1,0 +1,22 @@
+uuid: d96452b0-2b3a-43db-b7ff-2148f745a164
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - burst_theme
+_core:
+  default_config_hash: QTwkfDaGeBUk6aerktJBDXso4fCsqLTQOuWKXE1xMPU
+id: burst_theme_content
+theme: burst_theme
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility: {  }
