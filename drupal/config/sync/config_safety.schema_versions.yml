@@ -16,6 +16,9 @@ field: 8500
 field_ui: 8000
 file: 8700
 filter: 8000
+graphql: 8001
+graphql_composable: 8000
+graphql_examples: 8000
 language: 8001
 languagefield: 8000
 node: 8700
@@ -31,6 +34,7 @@ system: 8901
 taxonomy: 8702
 text: 8000
 toolbar: 8000
+typed_data: 8000
 user: 8100
 views: 8500
 views_ui: 8000
