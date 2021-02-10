@@ -9,3 +9,7 @@ config:
 proxy:
   appserver_nginx:
     - cms.eurofiber.com.localhost
+
+services:
+  cache:
+    type: redis:5
