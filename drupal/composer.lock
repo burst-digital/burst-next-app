@@ -60,16 +60,16 @@
         },
         {
             "name": "burst/drupal-distribution",
-            "version": "3.1.4",
+            "version": "3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://gitlab.com/burstdigital/open-source/burst-drupal-distribution.git",
-                "reference": "40ffc465bdf9c2ffa8253ec5698bfa59c37ca1b1"
+                "reference": "45a1081b5048ffddfdd686d305070b36e48be5b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/burstdigital%2Fopen-source%2Fburst-drupal-distribution/repository/archive.zip?sha=40ffc465bdf9c2ffa8253ec5698bfa59c37ca1b1",
-                "reference": "40ffc465bdf9c2ffa8253ec5698bfa59c37ca1b1",
+                "url": "https://gitlab.com/api/v4/projects/burstdigital%2Fopen-source%2Fburst-drupal-distribution/repository/archive.zip?sha=45a1081b5048ffddfdd686d305070b36e48be5b9",
+                "reference": "45a1081b5048ffddfdd686d305070b36e48be5b9",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "The Burst Drupal distribution. For internal use only.",
-            "time": "2021-01-26T16:34:03+00:00"
+            "time": "2021-02-10T12:22:31+00:00"
         },
         {
             "name": "chi-teck/drupal-code-generator",
