@@ -12,9 +12,11 @@
     "postinstall": "is-ci || (cd .. && husky install)"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.7",
     "next": "10.0.6",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@burst/ts-config": "0.0.4",
