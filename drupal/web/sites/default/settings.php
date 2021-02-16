@@ -11,7 +11,7 @@ if (getenv('PLATFORM_RELATIONSHIPS')) {
     $settings['redis.connection']['interface'] = 'PhpRedis';
     $settings['redis.connection']['host'] = $relationships['redis'][0]['host'];
     $settings['redis.connection']['port'] = $relationships['redis'][0]['port'];
-    $settings['cache']['default'] = 'cache.backend.redis';
+//    $settings['cache']['default'] = 'cache.backend.redis';
     $settings['container_yamls'][] = 'modules/redis/example.services.yml';
   }
 }
