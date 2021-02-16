@@ -1,0 +1,11 @@
+query Homepage {
+  homepage: route(path: "/") {
+    ... on EntityCanonicalUrl {
+      entity {
+        ... on NodeSpecialPage {
+          title
+        }
+      }
+    }
+  }
+}

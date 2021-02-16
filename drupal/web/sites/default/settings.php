@@ -25,4 +25,3 @@ if (getenv('LANDO_INFO')) {
   $settings['cache']['default'] = 'cache.backend.redis';
   $settings['container_yamls'][] = 'modules/redis/example.services.yml';
 }
-

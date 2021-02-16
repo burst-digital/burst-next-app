@@ -1,0 +1,50 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run build:production",
+    "build:development": "run-s -l build:development:*",
+    "build:production": "run-s -ls build:production:*",
+    "build:development:next": "next build",
+    "build:production:next": "next build",
+    "build:development:generate": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -c codegen.yml -r dotenv/config",
+    "build:production:generate": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -c codegen.yml -r dotenv/config",
+    "start": "echo \"Info: run using 'npx next start'\"",
+    "lint": "npm run lint-production",
+    "lint:development": "run-s -l lint:development:*",
+    "lint:development:staged": "burst lint --fix --staged",
+    "lint:production": "burst lint --fix",
+    "postinstall": "is-ci || (cd .. && husky install)"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.7",
+    "@apollo/react-hooks": "^4.0.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "axios": "^0.21.1",
+    "graphql": "^15.5.0",
+    "next": "10.0.6",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "styled-components": "^5.2.1"
+  },
+  "devDependencies": {
+    "@burst/ts-config": "0.0.4",
+    "@graphql-codegen/add": "^2.0.2",
+    "@graphql-codegen/cli": "1.20.1",
+    "@graphql-codegen/fragment-matcher": "2.0.1",
+    "@graphql-codegen/introspection": "1.18.1",
+    "@graphql-codegen/typescript": "1.20.2",
+    "@graphql-codegen/typescript-operations": "1.17.14",
+    "@graphql-codegen/typescript-react-apollo": "2.2.1",
+    "@types/node": "^14.14.28",
+    "@types/react": "^17.0.2",
+    "@types/styled-components": "^5.1.7",
+    "dotenv": "^8.2.0",
+    "husky": "^5.0.9",
+    "is-ci": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.1.5"
+  }
+}

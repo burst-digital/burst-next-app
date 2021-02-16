@@ -1,0 +1,3 @@
+include:
+  - project: 'burstdigital/utils/burst-devtools'
+    file: '/ci-templates/project.yml'
