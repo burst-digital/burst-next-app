@@ -1,8 +1,15 @@
 {
   "extends": "./node_modules/@burst/ts-config/tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@generated/*": ["generated/*"],
+      "@misc/*": ["misc/*"],
+      "@pages/*": ["pages/*"]
+    },
     "esModuleInterop": true
   },
-  "include": ["next-env.d.ts", "pages", "generated", "components"],
+  "include": ["next-env.d.ts", "components", "generated", "misc", "pages"],
   "exclude": ["node_modules"]
 }
