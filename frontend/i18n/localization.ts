@@ -8,13 +8,14 @@ enum Language {
 }
 
 enum Region {
-  BE = 'BE',
-  NL = 'NL',
-  INTL = 'INTL',
+  be = 'be',
+  nl = 'nl',
+  fr = 'fr',
+  intl = 'intl',
 }
 
 const DEFAULT_LANGUAGE = Language.en;
-const DEFAULT_REGION = Region.INTL;
+const DEFAULT_REGION = Region.intl;
 
 export function useLocaleIdentifier() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export function resolveLocaleIdentifier(locale: string) {
   const [language, region, script] = locale.split('-');
 
   return {
+    locale,
     language: language in Language ? (language as Language) : DEFAULT_LANGUAGE,
     region: region in Region ? (region as Region) : DEFAULT_REGION,
     script: script ?? '',
