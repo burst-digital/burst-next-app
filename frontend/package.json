@@ -5,14 +5,14 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run build:production",
-    "build:development": "run-s -ls build:development",
-    "build:production": "run-s -ls build:production",
+    "build:development": "run-s -l build:development",
+    "build:production": "run-s -l build:production",
     "build:development:next": "next build",
     "build:production:next": "next build",
     "build:development:generate": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -c codegen.yml -r dotenv/config",
     "build:production:generate": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -c codegen.yml -r dotenv/config",
     "start": "next start",
-    "lint:development": "run-s -ls lint:*",
+    "lint:development": "run-s -l lint:development:*",
     "lint:development:staged": "burst lint --fix --staged ||:",
     "lint:production": "burst lint --fix",
     "postinstall": "is-ci || (cd .. && husky install)"
