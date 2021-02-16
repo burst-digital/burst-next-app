@@ -14,3 +14,11 @@
 'http://cms.{default}/':
   type: redirect
   to: 'https://cms.{default}/'
+
+'https://www.{default}/':
+  type: upstream
+  upstream: 'frontend:http'
+
+'http://www.{default}/':
+  type: redirect
+  to: 'https://www.{default}/'
