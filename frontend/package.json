@@ -12,8 +12,9 @@
     "build:development:generate": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -c codegen.yml -r dotenv/config",
     "build:production:generate": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -c codegen.yml -r dotenv/config",
     "start": "next start",
+    "lint": "npm run lint-production",
     "lint:development": "run-s -l lint:development:*",
-    "lint:development:staged": "burst lint --fix --staged ||:",
+    "lint:development:staged": "burst lint --fix --staged",
     "lint:production": "burst lint --fix",
     "postinstall": "is-ci || (cd .. && husky install)"
   },
