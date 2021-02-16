@@ -3,6 +3,6 @@
   "compilerOptions": {
     "esModuleInterop": true
   },
-  "include": ["next-env.d.ts", "pages", "components"],
+  "include": ["next-env.d.ts", "pages", "generated", "components"],
   "exclude": ["node_modules"]
 }

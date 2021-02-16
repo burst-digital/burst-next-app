@@ -1,12 +1,14 @@
 overwrite: true
-schema:       
+schema:
   # @TODO: remove baderie location
   - ${WEBSITE_ORIGIN:https://cms.baderie.nl}/graphql
-documents: "**/*.cms.graphql"
+documents: '**/*.cms.graphql'
 generates:
   generated/_graphql.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
-      - "fragment-matcher"
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+      - 'fragment-matcher'
