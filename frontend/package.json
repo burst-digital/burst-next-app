@@ -11,7 +11,7 @@
     "build:production:next": "next build",
     "build:development:generate": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -c codegen.yml -r dotenv/config",
     "build:production:generate": "DOTENV_CONFIG_PATH=./.env.production graphql-codegen -c codegen.yml -r dotenv/config",
-    "start": "next start",
+    "start": "echo \"Info: run using 'npx next start'\"",
     "lint": "npm run lint-production",
     "lint:development": "run-s -l lint:development:*",
     "lint:development:staged": "burst lint --fix --staged",

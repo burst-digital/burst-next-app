@@ -3,3 +3,7 @@ apps:
     hosting:
       type: platform
       id: t3b4fvjkuowfw
+  frontend:
+    hosting:
+      type: platform
+      id: t3b4fvjkuowfw
