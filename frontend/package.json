@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run build:production",
-    "build:development": "run-s -l build:development",
-    "build:production": "run-s -l build:production",
+    "build:development": "run-s -l build:development:*",
+    "build:production": "run-s -ls build:production:*",
     "build:development:next": "next build",
     "build:production:next": "next build",
     "build:development:generate": "DOTENV_CONFIG_PATH=./.env.development graphql-codegen -c codegen.yml -r dotenv/config",
