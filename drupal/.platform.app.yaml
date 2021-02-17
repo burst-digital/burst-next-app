@@ -75,7 +75,7 @@ disk: 2048
 # 'shared:files/NAME', where NAME is just a unique name for the mount.
 mounts:
   '/web/sites/default/files': 'shared:files/files'
-  '/web/sites/default/settings.php': 'shared:files/settings'
+  '/web/sites/eurofiber/files': 'shared:files/eurofiber'
   '/tmp': 'shared:files/tmp'
   '/private': 'shared:files/private'
   '/drush-backups': 'shared:files/drush-backups'
