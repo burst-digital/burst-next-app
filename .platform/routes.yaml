@@ -3,7 +3,7 @@
 # Each route describes how an incoming URL is going
 # to be processed by Platform.sh.
 
-'https://cms.{default}/':
+'https://cms.eurofiber.com.{default}/':
   type: upstream
   upstream: 'drupal:http'
   cache:
@@ -11,6 +11,6 @@
     # Base the cache on the session cookie and custom Drupal cookies. Ignore all other cookies.
     cookies: ['/^SS?ESS/', '/^Drupal.visitor/']
 
-'http://cms.{default}/':
+'http://cms.eurofiber.com.{default}/':
   type: redirect
-  to: 'https://cms.{default}/'
+  to: 'https://cms.eurofiber.com.{default}/'
