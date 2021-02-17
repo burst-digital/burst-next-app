@@ -24,4 +24,9 @@ if (getenv('LANDO_INFO')) {
   $settings['redis.connection']['port'] = $lando_info['cache']['internal_connection']['port'];
   $settings['cache']['default'] = 'cache.backend.redis';
   $settings['container_yamls'][] = 'modules/redis/example.services.yml';
+
+  // Mailhog.
+  $config['smtp.settings']['smtp_on'] = TRUE;
+  $config['smtp.settings']['smtp_host'] = 'mailhog';
+  $config['smtp.settings']['smtp_port'] = 1025;
 }
