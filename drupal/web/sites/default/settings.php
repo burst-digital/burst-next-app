@@ -4,6 +4,7 @@ define('CONFIG_SYNC_DIRECTORY', 'sync');
 
 require __DIR__ . '/../../profiles/contrib/burst-drupal-distribution/includes/settings.php';
 
+$config['install_profile'] = 'burst_distribution';
 
 if (getenv('PLATFORM_RELATIONSHIPS')) {
   $relationships = json_decode(base64_decode(getenv('PLATFORM_RELATIONSHIPS')), TRUE);
