@@ -5,11 +5,20 @@
     "paths": {
       "@components/*": ["components/*"],
       "@generated/*": ["generated/*"],
+      "@i18n/*": ["i18n/*"],
       "@misc/*": ["misc/*"],
       "@pages/*": ["pages/*"]
     },
+    "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["next-env.d.ts", "components", "generated", "misc", "pages"],
+  "include": [
+    "next-env.d.ts",
+    "components",
+    "generated",
+    "i18n",
+    "misc",
+    "pages"
+  ],
   "exclude": ["node_modules"]
 }
