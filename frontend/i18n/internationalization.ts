@@ -2,11 +2,7 @@ export function formatDate(date: Date, locale: string = '') {
   return Intl.DateTimeFormat(locale).format(date);
 }
 
-export function formatShortDate(date: Date, locale: string = 'en') {
-  return Intl.DateTimeFormat(locale).format(date);
-}
-
-export function formatTime(date: Date, locale: string = 'en') {
+export function formatTime(date: Date, locale: string = '') {
   return Intl.DateTimeFormat(locale, {
     hour: 'numeric',
     minute: 'numeric',
@@ -14,7 +10,7 @@ export function formatTime(date: Date, locale: string = 'en') {
   }).format(date);
 }
 
-export function formatCurrency(amount: number = 0, locale: string = 'en') {
+export function formatCurrency(amount: number = 0, locale: string = '') {
   return Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'EUR',

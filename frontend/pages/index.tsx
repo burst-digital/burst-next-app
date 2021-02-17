@@ -18,6 +18,8 @@ export default function Homepage() {
   const localeIdentifiersByRegion = useRegionalLocaleIdentifiers();
   const t = useKlot();
 
+  console.log(localeIdentifier.locale);
+
   return (
     <>
       <H1>Homepage</H1>
@@ -51,9 +53,8 @@ export default function Homepage() {
       <h3>{t('Optical fiber')}</h3>
 
       <h2>Internationalization test</h2>
-      <h3>Date: {formatDate(new Date(), localeIdentifier.locale)}</h3>
       <h3>
-        Short date: {formatShortDate(new Date(), localeIdentifier.locale)}
+        Short date: {formatDate(new Date(), localeIdentifier.locale)}
       </h3>
       <h3>Time: {formatTime(new Date(), localeIdentifier.locale)}</h3>
       <h3>Currency: {formatCurrency(89.99, localeIdentifier.locale)}</h3>
