@@ -17,4 +17,4 @@ hooks:
 # The configuration of the application when it is exposed to the web.
 web:
   commands:
-    start: npx next start -p $PORT
+    start: NODE_ICU_DATA=$(node-full-icu-path) npx next start -p $PORT
