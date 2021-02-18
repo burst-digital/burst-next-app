@@ -24,7 +24,7 @@ runtime:
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
-  database: 'db:mysql'
+  database: 'db:admin'
   redis: 'cache:redis'
 
 # The configuration of app when it is exposed to the web.
@@ -75,6 +75,7 @@ disk: 2048
 # 'shared:files/NAME', where NAME is just a unique name for the mount.
 mounts:
   '/web/sites/default/files': 'shared:files/files'
+  '/web/sites/eurofiber/files': 'shared:files/eurofiber'
   '/tmp': 'shared:files/tmp'
   '/private': 'shared:files/private'
   '/drush-backups': 'shared:files/drush-backups'

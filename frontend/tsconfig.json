@@ -6,11 +6,19 @@
       "@components/*": ["components/*"],
       "@generated/*": ["generated/*"],
       "@pages/*": ["pages/*"],
-      "@public/*": ["public/*"],
+      "@i18n/*": ["i18n/*"],
       "@misc/*": ["misc/*"]
     },
+    "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["next-env.d.ts", "pages", "generated", "components"],
+  "include": [
+    "next-env.d.ts",
+    "components",
+    "generated",
+    "i18n",
+    "misc",
+    "pages"
+  ],
   "exclude": ["node_modules"]
 }

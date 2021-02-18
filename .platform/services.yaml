@@ -6,6 +6,13 @@
 db:
   type: mariadb:10.4
   disk: 2048
+  configuration:
+    schemas:
+      - eurofiber
+    endpoints:
+      admin:
+        privileges:
+          eurofiber: admin
 
 cache:
   type: redis:6.0

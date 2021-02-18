@@ -31,6 +31,6 @@ foreach ($base_sites as $domain => $folder) {
    *   3. Platform project (PLATFORM_PROJECT)
    */
   if (!empty($_ENV['PLATFORM_ENVIRONMENT']) && !empty($_ENV['PLATFORM_PROJECT'])) {
-    $sites[$domain . '.' . $_ENV['PLATFORM_ENVIRONMENT'] . '-' . $_ENV['PLATFORM_PROJECT'] . '.eu-4.platformsh.site'] = $folder;
+    $sites[$domain . '.' . $_ENV['PLATFORM_ENVIRONMENT'] . '-' . $_ENV['PLATFORM_PROJECT'] . '.de-2.platformsh.site'] = $folder;
   }
 }

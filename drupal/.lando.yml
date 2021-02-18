@@ -13,3 +13,5 @@ proxy:
 services:
   cache:
     type: redis:5
+  mailhog:
+    type: mailhog
