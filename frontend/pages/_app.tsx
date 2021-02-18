@@ -1,3 +1,4 @@
+import DefaultMetatags from '@components/layout/DefaultMetatags/Component';
 import Favicons from '@components/layout/Favicons/Component';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
 import Head from 'next/head';
@@ -9,6 +10,7 @@ export default function App(props: AppProps) {
       <props.Component />
 
       <Head>
+        <DefaultMetatags />
         <Favicons />
       </Head>
     </>

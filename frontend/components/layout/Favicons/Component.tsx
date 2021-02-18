@@ -3,6 +3,7 @@ import React from 'react';
 
 const site = Site.eurofiber;
 
+// Refer to: https://realfavicongenerator.net/
 export default function Favicons() {
   // @TODO: make variable resolution dynamic based on envvar/domain.
   switch (site) {
