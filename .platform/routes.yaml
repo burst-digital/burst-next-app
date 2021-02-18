@@ -3,6 +3,7 @@
 # Each route describes how an incoming URL is going
 # to be processed by Platform.sh.
 
+# @TODO: hardcoded domains are necessary due to multisite behaviour, can be deleted when upgrading P.sh.
 'https://cms.eurofiber.com.{default}/':
   type: upstream
   upstream: 'drupal:http'
@@ -14,3 +15,11 @@
 'http://cms.eurofiber.com.{default}/':
   type: redirect
   to: 'https://cms.eurofiber.com.{default}/'
+
+'https://www.{default}/':
+  type: upstream
+  upstream: 'frontend:http'
+
+'http://www.{default}/':
+  type: redirect
+  to: 'https://www.{default}/'

@@ -5,9 +5,9 @@
     "paths": {
       "@components/*": ["components/*"],
       "@generated/*": ["generated/*"],
+      "@pages/*": ["pages/*"],
       "@i18n/*": ["i18n/*"],
-      "@misc/*": ["misc/*"],
-      "@pages/*": ["pages/*"]
+      "@misc/*": ["misc/*"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true

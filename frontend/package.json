@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ICU_DATA=$(node-full-icu-path) next dev",
+    "dev": "run-p -l dev:*",
+    "dev:next": "NODE_ICU_DATA=$(node-full-icu-path) next dev",
+    "dev:open": "open http://localhost:3000",
     "build": "npm run build:production",
     "build:development": "run-s -l build:development:*",
     "build:production": "run-s -ls build:production:*",

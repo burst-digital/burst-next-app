@@ -11,7 +11,7 @@ disk: 256
 # The hooks that will be triggered when the package is deployed.
 hooks:
   build: |
-    npm install
+    npm ci
     npm run build
 
 # The configuration of the application when it is exposed to the web.
