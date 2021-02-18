@@ -4,11 +4,27 @@ schema:
   - ${WEBSITE_ORIGIN:https://cms.baderie.nl}/graphql
 documents: '**/*.cms.graphql'
 generates:
-  generated/_graphql.tsx:
+  generated/_graphql-apollo.tsx:
     plugins:
       - add:
           content: '/* eslint-disable */'
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+      - 'fragment-matcher'
+  generated/_graphql-urql.tsx:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-urql'
+      - 'fragment-matcher'
+  generated/_graphql-request.ts:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-graphql-request'
       - 'fragment-matcher'
