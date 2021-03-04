@@ -14,11 +14,6 @@ import {
   formatTime,
 } from '@i18n/internationalization';
 
-// GraphQL
-// make sure the graphql end-point is set in codegen.yml
-// import { HomepageQuery } from '@generated/graphql-request';
-// import { createGraphqlRequestSdk } from '@misc/graphql-request-sdk';
-
 // Components
 import { H1 } from '@components/atoms/Heading/Component';
 import { Logo } from '@components/atoms/Logo/Component';
@@ -33,9 +28,6 @@ import { getOrigin } from '@misc/environments';
 export async function getStaticProps() {
   const url = resolveApiUrl(new URL(getOrigin()));
 
-  // const sdk = createGraphqlRequestSdk(url);
-  // const homepage = await sdk.Homepage();
-
   return {
     revalidate: 5,
     props: {
@@ -47,7 +39,6 @@ export async function getStaticProps() {
 
 export default function Homepage(props: {
   date: string;
-  // homepage: HomepageQuery;
 }) {
   const localeIdentifier = useLocaleIdentifier();
   const localeIdentifiersByRegion = useRegionalLocaleIdentifiers();
@@ -67,7 +58,6 @@ export default function Homepage(props: {
         }}
       >
         <Logo />
-        {/* <H1>{(props.homepage as any).homepage.entity.title}</H1> */}
         <H1>burst-digital/burst-next-app</H1>
         <small>{props.date}</small>
       </Column>
