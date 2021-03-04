@@ -4,14 +4,16 @@ import React from 'react';
 
 // import { Site } from '@constants/site';
 // const site = Site.default;
+// switch (site) {
+//   default:
+//   case Site.default: {
+//   }
+// }
 
 // Refer to: https://realfavicongenerator.net/
 export default function Favicons() {
-  // In case of multiple sites
 
-  // switch (site) {
-  //   default:
-  //   case Site.default: {
+
   return (
     <>
       <link
@@ -47,5 +49,3 @@ export default function Favicons() {
     </>
   );
 }
-//   }
-// }
