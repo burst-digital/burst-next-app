@@ -61,6 +61,43 @@ Copy and rename `env.example.txt` to `.env.development` and `.env.production`.
 Update `codegen.yml` if needed. Currently no the WEBSITE_ORIGIN is set to cms.domain.com.
 All GraphQL related stuff is commented in the `index.tsx` page. If GraphQL is set up, it should be safe to update the query and uncomment the GraphQL related stuff.
 
+#### Example GraphQL
+
+A query example
+
+```graphql
+query Homepage {
+  homepage: route(path: "/") {
+    ... on EntityCanonicalUrl {
+      entity {
+        ... on NodeSpecialPage {
+          title
+        }
+      }
+    }
+  }
+}
+```
+
+A page example
+
+```javascript
+import { HomepageQuery } from '@generated/graphql-request';
+import { createGraphqlRequestSdk } from '@misc/graphql-request-sdk';
+
+const sdk = createGraphqlRequestSdk(url);
+const homepage = await sdk.Homepage();
+
+export default function Homepage(props: {
+  homepage: HomepageQuery;
+}) {
+  return (
+  <p>{(props.homepage as any).homepage.entity.title}</p>
+  )
+}
+
+```
+
 ### Languages
 
 You can change these values in `next.config.js` to add or remove languages.
