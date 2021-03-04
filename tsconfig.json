@@ -1,0 +1,29 @@
+{
+  "extends": "./node_modules/@burst/ts-config/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@constants/*": ["constants/*"],
+      "@generated/*": ["generated/*"],
+      "@pages/*": ["pages/*"],
+      "@i18n/*": ["i18n/*"],
+      "@misc/*": ["misc/*"],
+      "@lib/*": ["lib/*"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "constants",
+    "components",
+    "generated",
+    "i18n",
+    "misc",
+    "lib",
+    "pages",
+    "_document.tsx"
+  ],
+  "exclude": ["node_modules"]
+}
