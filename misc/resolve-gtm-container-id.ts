@@ -4,7 +4,6 @@
 // import { getSite } from './environments';
 
 export default function resolveGtmContainerId() {
-
   return 'GTM-XXXXXXX';
 
   // In case of multiple sites

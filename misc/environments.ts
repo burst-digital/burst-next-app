@@ -1,10 +1,10 @@
 // In case of multiple sites
 // import { Site } from '@constants/site';
 
-export function getOrigin() {
+export function getWebsiteApiOrigin() {
   return (
-    process.env.WEBSITE_ORIGIN ||
-    process.env.NEXT_PUBLIC_WEBSITE_ORIGIN ||
+    process.env.WEBSITE_API_ORIGIN ??
+    process.env.NEXT_PUBLIC_WEBSITE_URL ??
     'https://www.domain.com'
   );
 }

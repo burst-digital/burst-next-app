@@ -1,6 +1,4 @@
-const { PHASE_PRODUCTION_BUILD } = require('next/constants');
-
-const defaultConfig = {
+module.exports = {
   i18n: {
     locales: [
       'en',
@@ -14,14 +12,4 @@ const defaultConfig = {
     ],
     defaultLocale: 'en',
   },
-};
-
-module.exports = phase => {
-  const config = defaultConfig;
-
-  if (phase === PHASE_PRODUCTION_BUILD) {
-    config.distDir = '.next.proxy';
-  }
-
-  return config;
 };

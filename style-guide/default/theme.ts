@@ -1,25 +1,10 @@
-const black = {
-  900: '#000000',
-};
-
-const red = {
-  600: '#e0091d',
-};
-
-const white = {
-  100: '#FFFFFF',
-  200: '#e1e1e1',
-};
-
 export const defaultTheme = {
-  colors: {
-    black,
-    red,
-    white,
-  },
   breakpoints: {
+    '320': '320px',
+    '480': '480px',
     '600': '600px',
     '720': '720px',
+    '768px': '768px',
     '960': '960px',
     '1024': '1024px',
     '1280': '1280px',
