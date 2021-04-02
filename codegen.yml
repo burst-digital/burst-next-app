@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - ${WEBSITE_ORIGIN:https://cms.domain.com}/graphql
+  - ${WEBSITE_API_ORIGIN:https://cms.domain.com}/graphql
 documents: '**/*.cms.graphql'
 generates:
   generated/graphql-request.ts:

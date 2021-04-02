@@ -1,0 +1,3 @@
+# Required to be able to lint.
+variables:
+  BURST_LINT: enable

@@ -12,8 +12,6 @@ import React from 'react';
 
 // Refer to: https://realfavicongenerator.net/
 export default function Favicons() {
-
-
   return (
     <>
       <link
@@ -41,10 +39,7 @@ export default function Favicons() {
       />
       <link rel="shortcut icon" href="/default/favicon.ico" />
       <meta name="msapplication-TileColor" content="#ffffff" />
-      <meta
-        name="msapplication-config"
-        content="/default/browserconfig.xml"
-      />
+      <meta name="msapplication-config" content="/default/browserconfig.xml" />
       <meta name="theme-color" content="#ffffff" />
     </>
   );
