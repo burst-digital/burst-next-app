@@ -13,6 +13,12 @@ export function getDevRevalidate() {
   return process.env.NODE_ENV === 'development' ? 15 : null;
 }
 
+export function getCmsUrl() {
+  return (
+    process.env.WEBSITE_CMS_URL || process.env.NEXT_PUBLIC_WEBSITE_CMS_URL || ''
+  );
+}
+
 // In case of multiple sites
 
 // export function getSite() {

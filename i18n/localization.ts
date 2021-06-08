@@ -38,6 +38,13 @@ export function resolveLocaleIdentifier(locale: string) {
     language: language in Language ? (language as Language) : DEFAULT_LANGUAGE,
     region: region in Region ? (region as Region) : DEFAULT_REGION,
     script: script ?? '',
+    toPath(path = '/') {
+      if (this.region === Region.intl) {
+        return path;
+      }
+
+      return `/${this.locale}${path}`;
+    },
   };
 }
 

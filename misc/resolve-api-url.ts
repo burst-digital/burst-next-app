@@ -1,11 +1,12 @@
 export default function resolveApiUrl(
   url: URL,
-  options?: { endpoint?: string; ssl?: boolean },
+  options?: { endpoint?: string; ssl?: boolean; www?: boolean },
 ) {
   const opts = {
     endpoint: '/graphql',
     ssl: true,
     subdomain: 'cms',
+    www: false,
     ...options,
   };
 
@@ -20,8 +21,12 @@ export default function resolveApiUrl(
 
   if (hostname.startsWith('www')) {
     hostname = hostname.replace('www', opts.subdomain);
-  } else {
+  } else if (!hostname.startsWith(opts.subdomain)) {
     hostname = `${opts.subdomain}.${hostname}`;
+  }
+
+  if (opts.www) {
+    hostname = hostname.replace(opts.subdomain, 'www');
   }
 
   const protocol = opts.ssl ? 'https' : 'http';
