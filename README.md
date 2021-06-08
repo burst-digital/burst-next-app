@@ -20,7 +20,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
 ## Burst next app
 
@@ -58,7 +58,7 @@ Copy and rename `env.example.txt` to `.env.development` and `.env.production`.
 
 ### GraphQL
 
-Update `codegen.yml` if needed. Currently no the WEBSITE_ORIGIN is set to cms.domain.com.
+Update `codegen.yml` if needed. Currently the WEBSITE_ORIGIN is set to cms.domain.com.
 All GraphQL related stuff is commented in the `index.tsx` page. If GraphQL is set up, it should be safe to update the query and uncomment the GraphQL related stuff.
 
 #### Example GraphQL
@@ -142,7 +142,37 @@ We have already set up a Theme Provider from Styled Components and a default the
 
 Change the values in `./public/default/site.webmanifest`
 
-### To-do
+### Ideas to do
 
 - Determine if the Google Tag Manager should be removed ( see `./lib/react-gtm` )
+
+### Scheduled to do
+
+- Implement a fonts.css file instead of Global Styles from Styled Components
+- Implement a working example of css variables and add top-level theme overrides
+- Add usefull components we often use
+  - _InternalExternalLink_
+  - _Conditional Wrapper_
+  - _React GTM_
+  - _Sluggify function_
+  - _useClientSideState_
+  - Robots.txt
+  - Sitemaps (api endpoint)
+  - GraphQL (api endpoint
+  - Middleware runner (?)
+  - Breadcrumb
+  - Redirect helper
+  - SEO
+  - 404
+  - Cookiebar
+  - SVGs ???
+
+### Done
+
 - ~~Add an example environment file~~
+- ~~Add default meta tags~~
+- ~~Add favicon~~
+
+### Won't do
+
+- We will not implement a state management solution as of now. This is too complex and is usually dependant of the type of project.
