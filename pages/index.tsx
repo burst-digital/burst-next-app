@@ -1,6 +1,11 @@
 // Base
 import React from 'react';
 
+// Constants
+import {
+  DEFAULT_REVALIDATE,
+} from '@constants/revalidate';
+
 // Localization
 import {
   useLocaleIdentifier,
@@ -23,7 +28,7 @@ export async function getStaticProps() {
   // const url = getWebsiteApiOrigin();
 
   return {
-    revalidate: 5,
+    revalidate: DEFAULT_REVALIDATE,
     props: {
       date: new Date().toString(),
     },

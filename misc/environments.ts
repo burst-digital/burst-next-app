@@ -9,6 +9,10 @@ export function getWebsiteApiOrigin() {
   );
 }
 
+export function getDevRevalidate() {
+  return process.env.NODE_ENV === 'development' ? 15 : null;
+}
+
 // In case of multiple sites
 
 // export function getSite() {
