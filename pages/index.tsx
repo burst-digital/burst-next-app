@@ -1,6 +1,5 @@
 // Base
 import React from 'react';
-import Head from 'next/head';
 
 // Localization
 import {
@@ -13,6 +12,9 @@ import {
   formatDate,
   formatTime,
 } from '@i18n/internationalization';
+
+// SEO
+import Metatags from '@components/molecules/Metatags/Component';
 
 // Components
 import LanguageSwitch from '@components/organisms/LanguageSwitch/Component';
@@ -35,9 +37,12 @@ export default function Homepage(props: { date: string }) {
 
   return (
     <>
-      <Head>
-        <title>Default title</title>
-      </Head>
+      <Metatags
+        {...{
+          title: 'Page title',
+          description: 'Page description',
+        }}
+      />
       <h1>burst-digital/burst-next-app</h1>
       <small>{props.date}</small>
       <LanguageSwitch />

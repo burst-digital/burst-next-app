@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React from 'react';
 
 // In case of multiple sites
@@ -13,7 +14,7 @@ import React from 'react';
 // Refer to: https://realfavicongenerator.net/
 export default function Favicons() {
   return (
-    <>
+    <Head>
       <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -41,6 +42,6 @@ export default function Favicons() {
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="msapplication-config" content="/default/browserconfig.xml" />
       <meta name="theme-color" content="#ffffff" />
-    </>
+    </Head>
   );
 }

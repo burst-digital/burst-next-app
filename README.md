@@ -52,10 +52,6 @@ If you are familiar with next you probably can follow, if not [check nextJS docs
 
 ## Details
 
-### Environment files
-
-Copy and rename `env.example.txt` to `.env.development` and `.env.production`.
-
 ### GraphQL
 
 Update `codegen.yml` if needed. Currently the WEBSITE_ORIGIN is set to cms.domain.com.
@@ -138,6 +134,11 @@ We are using a few standard aliases in our codebase. These are not allowed to be
 
 We have already set up a Theme Provider from Styled Components and a default theme in `./style-guide/default`
 
+### SEO
+
+We have a standard SEO block, that can be included in every page `<Metatags />`. This has a default initial value that comes from `./constants/default-metatags.ts`. Please update this to make sure pages have a correct default state. The Metatags component is used to override these values per page.
+Warning: We use different instances of <Head>, which give some problems when changing the level of nesting of <Head>.
+
 ### Misc
 
 Change the values in `./public/default/site.webmanifest`
@@ -156,22 +157,27 @@ Change the values in `./public/default/site.webmanifest`
   - _React GTM_
   - _Sluggify function_
   - _useClientSideState_
-  - Robots.txt
   - Sitemaps (api endpoint)
   - GraphQL (api endpoint
   - Middleware runner (?)
   - Breadcrumb
   - Redirect helper
-  - SEO
   - 404
   - Cookiebar
   - SVGs ???
+- Revalidation and Revalidation patch for nextjs
+- Performance marks
+- Example for Google Fonts
+- Imagekit
 
 ### Done
 
 - ~~Add an example environment file~~
 - ~~Add default meta tags~~
 - ~~Add favicon~~
+- ~~Add default SEO block~~
+- ~~Add a robots.txt~~
+- ~~Add a /images/share-image.jpg~~
 
 ### Won't do
 
