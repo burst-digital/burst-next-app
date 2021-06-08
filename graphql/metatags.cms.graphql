@@ -1,0 +1,7 @@
+fragment MetatagsFragment on Metatags {
+  title
+  description
+  fb_app_id
+  og_image
+  robots
+}
