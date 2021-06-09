@@ -172,12 +172,6 @@ Change the values in `./public/default/site.webmanifest`
 
 ### Scheduled to do
 
-- Add usefull components we often use
-
-  - Cookiebar
-
-- Performance marks
-
 ### Done
 
 - ~~Add an example environment file~~
@@ -201,6 +195,8 @@ Change the values in `./public/default/site.webmanifest`
 - ~~Breadcrumb~~
 - ~~Redirect helper~~
 - ~~404~~
+- ~~Cookiebar~~
+- ~~Performance marks~~
 
 ### Won't do
 
