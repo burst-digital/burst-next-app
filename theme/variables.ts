@@ -18,7 +18,8 @@ export const cssVariables = css`
     --color-blue-900: #1111ff;
 
     /* Fonts */
-    --font-family-primary: 'Helvetica', 'Arial', sans-serif;
+    --font-family-primary: 'avenir-next', serif;
+    --font-family-secondary: 'Roboto', sans-serif;
 
     /* Spacing (4px steps) */
     --spacing-1x: 0.4rem;

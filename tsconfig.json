@@ -10,7 +10,8 @@
       "@i18n/*": ["i18n/*"],
       "@misc/*": ["misc/*"],
       "@lib/*": ["lib/*"],
-      "@theme/*": ["theme/*"]
+      "@theme/*": ["theme/*"],
+      "@icons/*": ["icons/*"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true

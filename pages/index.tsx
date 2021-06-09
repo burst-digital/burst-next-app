@@ -1,5 +1,11 @@
 // Base
 import React from 'react';
+import { GetStaticProps } from 'next';
+
+// Graphql
+// import resolveApiUrl from '@misc/resolve-api-url';
+// import { createGraphqlRequestSdk } from '@misc/graphql-request-sdk';
+// import { getCmsUrl } from '@misc/environments';
 
 // Constants
 import {
@@ -10,7 +16,9 @@ import {
 import {
   useLocaleIdentifier,
   useRegionalLocaleIdentifiers,
+  // resolveLocaleIdentifier,
 } from '@i18n/localization';
+
 import { useKlot } from '@i18n/translate';
 import {
   formatCurrency,
@@ -24,9 +32,24 @@ import Metatags from '@components/molecules/Metatags/Component';
 // Components
 import LanguageSwitch from '@components/organisms/LanguageSwitch/Component';
 import { CSSVariablesExample } from '@components/atoms/CSSVariablesExample/Component';
+import { IconMapper } from '@components/atoms/Icons/Component';
 
-export async function getStaticProps() {
-  // const url = getWebsiteApiOrigin();
+// Redirects
+// import { getRedirect } from '@misc/redirect';
+
+export const getStaticProps: GetStaticProps = async ctx => {
+  // const locale = ctx.locale ?? ctx.defaultLocale ?? '';
+  // const localeIdentifier = resolveLocaleIdentifier(locale);
+
+  // const url = resolveApiUrl(new URL(getCmsUrl()));
+  // const sdk = createGraphqlRequestSdk(url);
+
+  // const path = localeIdentifier.toPath('/');
+  // const redirect = await getRedirect(path, sdk);
+
+  // if (redirect) {
+  //   return redirect;
+  // }
 
   return {
     revalidate: DEFAULT_REVALIDATE, 
@@ -36,10 +59,12 @@ export async function getStaticProps() {
   };
 }
 
+
 export default function Homepage(props: { date: string }) {
   const localeIdentifier = useLocaleIdentifier();
   const localeIdentifiersByRegion = useRegionalLocaleIdentifiers();
   const t = useKlot();
+  const Icon = IconMapper('arrow-right');
 
   return (
     <>
@@ -60,6 +85,13 @@ export default function Homepage(props: { date: string }) {
       <CSSVariablesExample>It's also possible to add top-level theming. It's pretty easy, just add a class with <pre style={{display: 'inline'}}>.theme__dark & {`{...}`}</pre> so every {`<CSSVariablesExample>`} with a parent with the class `theme__dark` has a different styling.</CSSVariablesExample>
       <div className="theme__dark">
         <CSSVariablesExample>See?</CSSVariablesExample>
+      </div>
+
+
+      <h2>Icons</h2>
+      <p>Use the iconMapper to retrieve icons: {Icon} </p>
+      <div className="theme__dark">
+        <CSSVariablesExample>Make sure to use currentColor as a color in the SVg to color them {Icon}</CSSVariablesExample>
       </div>
 
       <LanguageSwitch />

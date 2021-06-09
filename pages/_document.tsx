@@ -44,6 +44,13 @@ export default class MyDocument extends Document {
       <Html>
         <Head>
           <GtmHead containerId={containerId} />
+          <link rel="preload" href="fonts/AvenirNext-Regular.woff" as="font" type="font/woff" crossOrigin="anonymous" />
+          <link rel="preload" href="fonts/AvenirNext-Regular.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+          <link href="./fonts/fonts.css" rel="stylesheet" />
+
+          <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" as="style" />
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap" />
+
         </Head>
         <body>
           <GtmBody containerId={containerId} />

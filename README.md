@@ -92,6 +92,16 @@ interface Props {
 
 export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   const sdk = createGraphqlRequestSdk(url);
+
+  const locale = ctx.locale ?? ctx.defaultLocale ?? '';
+  const localeIdentifier = resolveLocaleIdentifier(locale);
+  const path = localeIdentifier.toPath('/');
+  const redirect = await getRedirect(path, sdk);
+
+  if (redirect) {
+    return redirect;
+  }
+
   const homepage = await sdk.Homepage();
 
   return {
@@ -162,23 +172,13 @@ Change the values in `./public/default/site.webmanifest`
 
 ### Scheduled to do
 
-- Implement a fonts.css file instead of Global Styles from Styled Components
 - Add usefull components we often use
-  - _InternalExternalLink_
-  - _Conditional Wrapper_
-  - _React GTM_
-  - _Sluggify function_
-  - _useClientSideState_
-  - GraphQL (api endpoint
-  - Middleware runner (?)
-  - Breadcrumb
+
   - Redirect helper
   - 404
   - Cookiebar
-  - SVGs ???
+
 - Performance marks
-- Example for Google Fonts
-- Imagekit
 
 ### Done
 
@@ -191,6 +191,16 @@ Change the values in `./public/default/site.webmanifest`
 - ~~Revalidation and Revalidation patch for nextjs~~
 - ~~Sitemaps (api endpoint)~~
 - ~~Implement a working example of css variables and add top-level theme overrides~~
+- ~~Example for Google Fonts~~
+- ~~Conditional Wrapper~~
+- ~~React GTM~~
+- ~~InternalExternalLink~~
+- ~~SVGs~~
+- ~~Sluggify function~~
+- ~~useClientSideState~~
+- ~~Middleware runner~~
+- ~~GraphQL (api endpoint)~~
+- ~~Breadcrumb~~
 
 ### Won't do
 
