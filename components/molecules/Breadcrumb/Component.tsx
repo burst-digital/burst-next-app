@@ -3,6 +3,7 @@ import React from 'react';
 import useBreadcrumb from '@misc/breadcrumb';
 import InternalOrExternalLink from '@components/atoms/Link/Component';
 import { BreadcrumbWrapper } from '@components/molecules/Breadcrumb/styled';
+import { useKlot } from '@i18n/translate';
 
 export default function Breadcrumb() {
   const breadcrumb = useBreadcrumb();
@@ -14,6 +15,7 @@ export default function Breadcrumb() {
   const [overflowIndexes, setOverflowIndex] = React.useState<
     Array<{ index: number; maxSize: number }>
   >([]);
+  const t = useKlot();
 
   // Custom overflow check to add elipsis when the breadcrumbs overflow the screen
   // Can't use text-over: elipsis in CSS since this requires a set width in px.
@@ -95,7 +97,7 @@ export default function Breadcrumb() {
                       : 'auto',
                   }}
                 >
-                  {index === 0 ? <>Home</> : <>{crumb.title}</>}
+                  {index === 0 ? <>{t('Home')}</> : <>{crumb.title}</>}
                 </InternalOrExternalLink>
               )}
               {index !== breadcrumb.length - 1 && !isOverflowing && (
@@ -103,7 +105,7 @@ export default function Breadcrumb() {
               )}
             </li>
           );
-        })}
+        })} 
       </ol>
     </BreadcrumbWrapper>
   );

@@ -174,8 +174,6 @@ Change the values in `./public/default/site.webmanifest`
 
 - Add usefull components we often use
 
-  - Redirect helper
-  - 404
   - Cookiebar
 
 - Performance marks
@@ -201,6 +199,8 @@ Change the values in `./public/default/site.webmanifest`
 - ~~Middleware runner~~
 - ~~GraphQL (api endpoint)~~
 - ~~Breadcrumb~~
+- ~~Redirect helper~~
+- ~~404~~
 
 ### Won't do
 
