@@ -9,7 +9,8 @@
       "@pages/*": ["pages/*"],
       "@i18n/*": ["i18n/*"],
       "@misc/*": ["misc/*"],
-      "@lib/*": ["lib/*"]
+      "@lib/*": ["lib/*"],
+      "@theme/*": ["theme/*"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true

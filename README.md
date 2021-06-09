@@ -52,6 +52,11 @@ If you are familiar with next you probably can follow, if not [check nextJS docs
 
 ## Details
 
+### NextJS Patch (important!)
+
+We added a Next.js patch. This patch solves a 'problem' in Next.js regarding the revalidation. We included the npm module `patch-package` which is needed to patch the Next.js module. This patch might become obsolete when Next.js updates.
+Whenever you are going to use a newer version of Next.js you must update the patch. This is achieved by running `npm patch-package next` which will update the filename of `./patches/next+10.2.3.patch`.
+
 ### GraphQL
 
 Update `codegen.yml` if needed. Currently the WEBSITE_ORIGIN is set to cms.domain.com.
@@ -81,17 +86,25 @@ A page example
 import { HomepageQuery } from '@generated/graphql-request';
 import { createGraphqlRequestSdk } from '@misc/graphql-request-sdk';
 
-const sdk = createGraphqlRequestSdk(url);
-const homepage = await sdk.Homepage();
-
-export default function Homepage(props: {
+interface Props {
   homepage: HomepageQuery;
-}) {
-  return (
-  <p>{(props.homepage as any).homepage.entity.title}</p>
-  )
 }
 
+export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
+  const sdk = createGraphqlRequestSdk(url);
+  const homepage = await sdk.Homepage();
+
+  return {
+    revalidate: DEFAULT_OVERVIEW_REVALIDATE,
+    props: {
+      homepage,
+    },
+  };
+};
+
+export default function Homepage(props: Props) {
+  return <p>{props.homepage.homepage.entity.title}</p>;
+}
 ```
 
 ### Languages
@@ -150,14 +163,12 @@ Change the values in `./public/default/site.webmanifest`
 ### Scheduled to do
 
 - Implement a fonts.css file instead of Global Styles from Styled Components
-- Implement a working example of css variables and add top-level theme overrides
 - Add usefull components we often use
   - _InternalExternalLink_
   - _Conditional Wrapper_
   - _React GTM_
   - _Sluggify function_
   - _useClientSideState_
-  - Sitemaps (api endpoint)
   - GraphQL (api endpoint
   - Middleware runner (?)
   - Breadcrumb
@@ -165,7 +176,6 @@ Change the values in `./public/default/site.webmanifest`
   - 404
   - Cookiebar
   - SVGs ???
-- Revalidation and Revalidation patch for nextjs
 - Performance marks
 - Example for Google Fonts
 - Imagekit
@@ -178,6 +188,9 @@ Change the values in `./public/default/site.webmanifest`
 - ~~Add default SEO block~~
 - ~~Add a robots.txt~~
 - ~~Add a /images/share-image.jpg~~
+- ~~Revalidation and Revalidation patch for nextjs~~
+- ~~Sitemaps (api endpoint)~~
+- ~~Implement a working example of css variables and add top-level theme overrides~~
 
 ### Won't do
 
