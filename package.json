@@ -18,7 +18,7 @@
     "lint:development": "run-s -l lint:development:*",
     "lint:development:staged": "burst lint --fix --staged",
     "lint:production": "burst lint",
-    "postinstall": "is-ci || (cd .. && husky install)"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "axios": "^0.21.1",
