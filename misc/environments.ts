@@ -9,6 +9,18 @@ export function getWebsiteApiOrigin() {
   );
 }
 
+export function getDevRevalidate() {
+  return process.env.NODE_ENV === 'development' ? 15 : null;
+}
+
+export function getCmsUrl() {
+  return (
+    process.env.WEBSITE_CMS_URL ||
+    process.env.NEXT_PUBLIC_WEBSITE_CMS_URL ||
+    'https://www.domain.com'
+  );
+}
+
 // In case of multiple sites
 
 // export function getSite() {

@@ -1,0 +1,227 @@
+diff --git a/node_modules/next/dist/next-server/server/incremental-cache.d.ts b/node_modules/next/dist/next-server/server/incremental-cache.d.ts
+index 4c6a25f..d0abaf1 100644
+--- a/node_modules/next/dist/next-server/server/incremental-cache.d.ts
++++ b/node_modules/next/dist/next-server/server/incremental-cache.d.ts
+@@ -29,6 +29,7 @@ export declare class IncrementalCache {
+         locales?: string[];
+     });
+     private getSeedPath;
++    private getMetadataPathname;
+     private calculateRevalidate;
+     getFallback(page: string): Promise<string>;
+     get(pathname: string): Promise<IncrementalCacheValue | void>;
+diff --git a/node_modules/next/dist/next-server/server/incremental-cache.js b/node_modules/next/dist/next-server/server/incremental-cache.js
+index 522945e..ca6885f 100644
+--- a/node_modules/next/dist/next-server/server/incremental-cache.js
++++ b/node_modules/next/dist/next-server/server/incremental-cache.js
+@@ -1,18 +1,183 @@
+-"use strict";exports.__esModule=true;exports.IncrementalCache=void 0;var _fs=require("fs");var _lruCache=_interopRequireDefault(require("next/dist/compiled/lru-cache"));var _path=_interopRequireDefault(require("path"));var _constants=require("../lib/constants");var _normalizePagePath=require("./normalize-page-path");function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}function toRoute(pathname){return pathname.replace(/\/$/,'').replace(/\/index$/,'')||'/';}class IncrementalCache{constructor({max,dev,distDir,pagesDir,flushToDisk,locales}){this.incrementalOptions=void 0;this.prerenderManifest=void 0;this.cache=void 0;this.locales=void 0;this.incrementalOptions={dev,distDir,pagesDir,flushToDisk:!dev&&(typeof flushToDisk!=='undefined'?flushToDisk:true)};this.locales=locales;if(dev){this.prerenderManifest={version:-1,// letting us know this doesn't conform to spec
+-routes:{},dynamicRoutes:{},notFoundRoutes:[],preview:null// `preview` is special case read in next-dev-server
+-};}else{this.prerenderManifest=JSON.parse((0,_fs.readFileSync)(_path.default.join(distDir,_constants.PRERENDER_MANIFEST),'utf8'));}this.cache=new _lruCache.default({// default to 50MB limit
+-max:max||50*1024*1024,length(val){if(val.isNotFound||val.isRedirect)return 25;// rough estimate of size of cache value
+-return val.html.length+JSON.stringify(val.pageData).length;}});}getSeedPath(pathname,ext){return _path.default.join(this.incrementalOptions.pagesDir,`${pathname}.${ext}`);}calculateRevalidate(pathname){pathname=toRoute(pathname);// in development we don't have a prerender-manifest
+-// and default to always revalidating to allow easier debugging
+-const curTime=new Date().getTime();if(this.incrementalOptions.dev)return curTime-1000;const{initialRevalidateSeconds}=this.prerenderManifest.routes[pathname]||{initialRevalidateSeconds:1};const revalidateAfter=typeof initialRevalidateSeconds==='number'?initialRevalidateSeconds*1000+curTime:initialRevalidateSeconds;return revalidateAfter;}getFallback(page){page=(0,_normalizePagePath.normalizePagePath)(page);return _fs.promises.readFile(this.getSeedPath(page,'html'),'utf8');}// get data from cache if available
+-async get(pathname){if(this.incrementalOptions.dev)return;pathname=(0,_normalizePagePath.normalizePagePath)(pathname);let data=this.cache.get(pathname);// let's check the disk for seed data
+-if(!data){if(this.prerenderManifest.notFoundRoutes.includes(pathname)){return{isNotFound:true,revalidateAfter:false};}try{const html=await _fs.promises.readFile(this.getSeedPath(pathname,'html'),'utf8');const pageData=JSON.parse(await _fs.promises.readFile(this.getSeedPath(pathname,'json'),'utf8'));data={html,pageData,revalidateAfter:this.calculateRevalidate(pathname)};this.cache.set(pathname,data);}catch(_){// unable to get data from disk
+-}}if(data&&data.revalidateAfter!==false&&data.revalidateAfter<new Date().getTime()){data.isStale=true;}const manifestPath=toRoute(pathname);const manifestEntry=this.prerenderManifest.routes[manifestPath];if(data&&manifestEntry){data.curRevalidate=manifestEntry.initialRevalidateSeconds;}return data;}// populate the incremental cache with new data
+-async set(pathname,data,revalidateSeconds){if(this.incrementalOptions.dev)return;if(typeof revalidateSeconds!=='undefined'){// TODO: Update this to not mutate the manifest from the
+-// build.
+-this.prerenderManifest.routes[pathname]={dataRoute:_path.default.posix.join('/_next/data',`${(0,_normalizePagePath.normalizePagePath)(pathname)}.json`),srcRoute:null,// FIXME: provide actual source route, however, when dynamically appending it doesn't really matter
+-initialRevalidateSeconds:revalidateSeconds};}pathname=(0,_normalizePagePath.normalizePagePath)(pathname);this.cache.set(pathname,{...data,revalidateAfter:this.calculateRevalidate(pathname)});// TODO: This option needs to cease to exist unless it stops mutating the
+-// `next build` output's manifest.
+-if(this.incrementalOptions.flushToDisk&&!data.isNotFound){try{const seedPath=this.getSeedPath(pathname,'html');await _fs.promises.mkdir(_path.default.dirname(seedPath),{recursive:true});await _fs.promises.writeFile(seedPath,data.html,'utf8');await _fs.promises.writeFile(this.getSeedPath(pathname,'json'),JSON.stringify(data.pageData),'utf8');}catch(error){// failed to flush to disk
+-console.warn('Failed to update prerender files for',pathname,error);}}}}exports.IncrementalCache=IncrementalCache;
++"use strict";
++
++exports.__esModule = true;
++exports.IncrementalCache = void 0;
++
++var _fs = require("fs");
++
++var _lruCache = _interopRequireDefault(require("next/dist/compiled/lru-cache"));
++
++var _path = _interopRequireDefault(require("path"));
++
++var _constants = require("../lib/constants");
++
++var _normalizePagePath = require("./normalize-page-path");
++
++function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
++
++function toRoute(pathname) {
++  return pathname.replace(/\/$/, '').replace(/\/index$/, '') || '/';
++}
++
++class IncrementalCache {
++  constructor({
++    max,
++    dev,
++    distDir,
++    pagesDir,
++    flushToDisk,
++    locales
++  }) {
++    this.incrementalOptions = void 0;
++    this.prerenderManifest = void 0;
++    this.cache = void 0;
++    this.locales = void 0;
++    this.incrementalOptions = {
++      dev,
++      distDir,
++      pagesDir,
++      flushToDisk: !dev && (typeof flushToDisk !== 'undefined' ? flushToDisk : true)
++    };
++    this.locales = locales;
++
++    if (dev) {
++      this.prerenderManifest = {
++        version: -1,
++        // letting us know this doesn't conform to spec
++        routes: {},
++        dynamicRoutes: {},
++        notFoundRoutes: [],
++        preview: null // `preview` is special case read in next-dev-server
++
++      };
++    } else {
++      this.prerenderManifest = JSON.parse((0, _fs.readFileSync)(_path.default.join(distDir, _constants.PRERENDER_MANIFEST), 'utf8'));
++    }
++
++    this.cache = new _lruCache.default({
++      // default to 50MB limit
++      max: max || 50 * 1024 * 1024,
++
++      length(val) {
++        if (val.isNotFound || val.isRedirect) return 25; // rough estimate of size of cache value
++
++        return val.html.length + JSON.stringify(val.pageData).length;
++      }
++
++    });
++  }
++
++  getSeedPath(pathname, ext) {
++    return _path.default.join(this.incrementalOptions.pagesDir, `${pathname}.${ext}`);
++  }
++
++  getMetadataPathname(pathname) {
++    return `${pathname}.metadata`;
++  }
++
++  calculateRevalidate(pathname) {
++    pathname = toRoute(pathname); // in development we don't have a prerender-manifest
++    // and default to always revalidating to allow easier debugging
++
++    const curTime = new Date().getTime();
++    if (this.incrementalOptions.dev) return curTime - 1000;
++    const {
++      initialRevalidateSeconds
++    } = this.prerenderManifest.routes[pathname] || {
++      initialRevalidateSeconds: 1
++    };
++    const revalidateAfter = typeof initialRevalidateSeconds === 'number' ? initialRevalidateSeconds * 1000 + curTime : initialRevalidateSeconds;
++    return revalidateAfter;
++  }
++
++  getFallback(page) {
++    page = (0, _normalizePagePath.normalizePagePath)(page);
++    return _fs.promises.readFile(this.getSeedPath(page, 'html'), 'utf8');
++  } // get data from cache if available
++
++
++  async get(pathname) {
++    if (this.incrementalOptions.dev) return;
++    pathname = (0, _normalizePagePath.normalizePagePath)(pathname);
++    let data = this.cache.get(pathname); // let's check the disk for seed data
++
++    if (!data) {
++      if (this.prerenderManifest.notFoundRoutes.includes(pathname)) {
++        return {
++          isNotFound: true,
++          revalidateAfter: false
++        };
++      }
++
++      try {
++        const html = await _fs.promises.readFile(this.getSeedPath(pathname, 'html'), 'utf8');
++        const pageData = JSON.parse(await _fs.promises.readFile(this.getSeedPath(pathname, 'json'), 'utf8'));
++        const metadata = JSON.parse(await _fs.promises.readFile(this.getSeedPath(this.getMetadataPathname(pathname), 'json'), 'utf-8'));
++        data = {
++          html,
++          pageData,
++          revalidateAfter: typeof metadata.revalidateAfter !== 'undefined' ? metadata.revalidateAfter : this.calculateRevalidate(pathname)
++        };
++        this.cache.set(pathname, data);
++      } catch (_) {// unable to get data from disk
++      }
++    }
++
++    if (data && data.revalidateAfter !== false && data.revalidateAfter < new Date().getTime()) {
++      data.isStale = true;
++    }
++
++    const manifestPath = toRoute(pathname);
++    const manifestEntry = this.prerenderManifest.routes[manifestPath];
++
++    if (data && manifestEntry) {
++      data.curRevalidate = manifestEntry.initialRevalidateSeconds;
++    }
++
++    return data;
++  } // populate the incremental cache with new data
++
++
++  async set(pathname, data, revalidateSeconds) {
++    if (this.incrementalOptions.dev) return;
++
++    if (typeof revalidateSeconds !== 'undefined') {
++      // TODO: Update this to not mutate the manifest from the
++      // build.
++      this.prerenderManifest.routes[pathname] = {
++        dataRoute: _path.default.posix.join('/_next/data', `${(0, _normalizePagePath.normalizePagePath)(pathname)}.json`),
++        srcRoute: null,
++        // FIXME: provide actual source route, however, when dynamically appending it doesn't really matter
++        initialRevalidateSeconds: revalidateSeconds
++      };
++    }
++
++    pathname = (0, _normalizePagePath.normalizePagePath)(pathname);
++    const metadata = {
++      revalidateAfter: this.calculateRevalidate(pathname)
++    };
++    this.cache.set(pathname, { ...data,
++      revalidateAfter: metadata.revalidateAfter
++    }); // TODO: This option needs to cease to exist unless it stops mutating the
++    // `next build` output's manifest.
++
++    if (this.incrementalOptions.flushToDisk && !data.isNotFound) {
++      try {
++        const seedPath = this.getSeedPath(pathname, 'html');
++        await _fs.promises.mkdir(_path.default.dirname(seedPath), {
++          recursive: true
++        });
++        await _fs.promises.writeFile(seedPath, data.html, 'utf8');
++        await _fs.promises.writeFile(this.getSeedPath(pathname, 'json'), JSON.stringify(data.pageData), 'utf8');
++        await _fs.promises.writeFile(this.getSeedPath(this.getMetadataPathname(pathname), 'json'), JSON.stringify(metadata), 'utf8');
++      } catch (error) {
++        // failed to flush to disk
++        console.warn('Failed to update prerender files for', pathname, error);
++      }
++    }
++  }
++
++}
++
++exports.IncrementalCache = IncrementalCache;
+ //# sourceMappingURL=incremental-cache.js.map
+\ No newline at end of file
+diff --git a/node_modules/next/dist/next-server/server/incremental-cache.js.map b/node_modules/next/dist/next-server/server/incremental-cache.js.map
+index 791f56f..6f7a3aa 100644
+--- a/node_modules/next/dist/next-server/server/incremental-cache.js.map
++++ b/node_modules/next/dist/next-server/server/incremental-cache.js.map
+@@ -1 +1 @@
+-{"version":3,"sources":["../../../next-server/server/incremental-cache.ts"],"names":["toRoute","pathname","replace","IncrementalCache","constructor","max","dev","distDir","pagesDir","flushToDisk","locales","incrementalOptions","prerenderManifest","cache","version","routes","dynamicRoutes","notFoundRoutes","preview","JSON","parse","path","join","PRERENDER_MANIFEST","LRUCache","length","val","isNotFound","isRedirect","html","stringify","pageData","getSeedPath","ext","calculateRevalidate","curTime","Date","getTime","initialRevalidateSeconds","revalidateAfter","getFallback","page","promises","readFile","get","data","includes","set","_","isStale","manifestPath","manifestEntry","curRevalidate","revalidateSeconds","dataRoute","posix","srcRoute","seedPath","mkdir","dirname","recursive","writeFile","error","console","warn"],"mappings":"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","sourcesContent":["import { promises, readFileSync } from 'fs'\nimport LRUCache from 'next/dist/compiled/lru-cache'\nimport path from 'path'\nimport { PrerenderManifest } from '../../build'\nimport { PRERENDER_MANIFEST } from '../lib/constants'\nimport { normalizePagePath } from './normalize-page-path'\n\nfunction toRoute(pathname: string): string {\n  return pathname.replace(/\\/$/, '').replace(/\\/index$/, '') || '/'\n}\n\ntype IncrementalCacheValue = {\n  html?: string\n  pageData?: any\n  isStale?: boolean\n  isNotFound?: boolean\n  isRedirect?: boolean\n  curRevalidate?: number | false\n  // milliseconds to revalidate after\n  revalidateAfter: number | false\n}\n\nexport class IncrementalCache {\n  incrementalOptions: {\n    flushToDisk?: boolean\n    pagesDir?: string\n    distDir?: string\n    dev?: boolean\n  }\n\n  prerenderManifest: PrerenderManifest\n  cache: LRUCache<string, IncrementalCacheValue>\n  locales?: string[]\n\n  constructor({\n    max,\n    dev,\n    distDir,\n    pagesDir,\n    flushToDisk,\n    locales,\n  }: {\n    dev: boolean\n    max?: number\n    distDir: string\n    pagesDir: string\n    flushToDisk?: boolean\n    locales?: string[]\n  }) {\n    this.incrementalOptions = {\n      dev,\n      distDir,\n      pagesDir,\n      flushToDisk:\n        !dev && (typeof flushToDisk !== 'undefined' ? flushToDisk : true),\n    }\n    this.locales = locales\n\n    if (dev) {\n      this.prerenderManifest = {\n        version: -1 as any, // letting us know this doesn't conform to spec\n        routes: {},\n        dynamicRoutes: {},\n        notFoundRoutes: [],\n        preview: null as any, // `preview` is special case read in next-dev-server\n      }\n    } else {\n      this.prerenderManifest = JSON.parse(\n        readFileSync(path.join(distDir, PRERENDER_MANIFEST), 'utf8')\n      )\n    }\n\n    this.cache = new LRUCache({\n      // default to 50MB limit\n      max: max || 50 * 1024 * 1024,\n      length(val) {\n        if (val.isNotFound || val.isRedirect) return 25\n        // rough estimate of size of cache value\n        return val.html!.length + JSON.stringify(val.pageData).length\n      },\n    })\n  }\n\n  private getSeedPath(pathname: string, ext: string): string {\n    return path.join(this.incrementalOptions.pagesDir!, `${pathname}.${ext}`)\n  }\n\n  private calculateRevalidate(pathname: string): number | false {\n    pathname = toRoute(pathname)\n\n    // in development we don't have a prerender-manifest\n    // and default to always revalidating to allow easier debugging\n    const curTime = new Date().getTime()\n    if (this.incrementalOptions.dev) return curTime - 1000\n\n    const { initialRevalidateSeconds } = this.prerenderManifest.routes[\n      pathname\n    ] || {\n      initialRevalidateSeconds: 1,\n    }\n    const revalidateAfter =\n      typeof initialRevalidateSeconds === 'number'\n        ? initialRevalidateSeconds * 1000 + curTime\n        : initialRevalidateSeconds\n\n    return revalidateAfter\n  }\n\n  getFallback(page: string): Promise<string> {\n    page = normalizePagePath(page)\n    return promises.readFile(this.getSeedPath(page, 'html'), 'utf8')\n  }\n\n  // get data from cache if available\n  async get(pathname: string): Promise<IncrementalCacheValue | void> {\n    if (this.incrementalOptions.dev) return\n    pathname = normalizePagePath(pathname)\n\n    let data = this.cache.get(pathname)\n\n    // let's check the disk for seed data\n    if (!data) {\n      if (this.prerenderManifest.notFoundRoutes.includes(pathname)) {\n        return { isNotFound: true, revalidateAfter: false }\n      }\n\n      try {\n        const html = await promises.readFile(\n          this.getSeedPath(pathname, 'html'),\n          'utf8'\n        )\n        const pageData = JSON.parse(\n          await promises.readFile(this.getSeedPath(pathname, 'json'), 'utf8')\n        )\n\n        data = {\n          html,\n          pageData,\n          revalidateAfter: this.calculateRevalidate(pathname),\n        }\n        this.cache.set(pathname, data)\n      } catch (_) {\n        // unable to get data from disk\n      }\n    }\n\n    if (\n      data &&\n      data.revalidateAfter !== false &&\n      data.revalidateAfter < new Date().getTime()\n    ) {\n      data.isStale = true\n    }\n\n    const manifestPath = toRoute(pathname)\n    const manifestEntry = this.prerenderManifest.routes[manifestPath]\n\n    if (data && manifestEntry) {\n      data.curRevalidate = manifestEntry.initialRevalidateSeconds\n    }\n    return data\n  }\n\n  // populate the incremental cache with new data\n  async set(\n    pathname: string,\n    data: {\n      html?: string\n      pageData?: any\n      isNotFound?: boolean\n      isRedirect?: boolean\n    },\n    revalidateSeconds?: number | false\n  ) {\n    if (this.incrementalOptions.dev) return\n    if (typeof revalidateSeconds !== 'undefined') {\n      // TODO: Update this to not mutate the manifest from the\n      // build.\n      this.prerenderManifest.routes[pathname] = {\n        dataRoute: path.posix.join(\n          '/_next/data',\n          `${normalizePagePath(pathname)}.json`\n        ),\n        srcRoute: null, // FIXME: provide actual source route, however, when dynamically appending it doesn't really matter\n        initialRevalidateSeconds: revalidateSeconds,\n      }\n    }\n\n    pathname = normalizePagePath(pathname)\n    this.cache.set(pathname, {\n      ...data,\n      revalidateAfter: this.calculateRevalidate(pathname),\n    })\n\n    // TODO: This option needs to cease to exist unless it stops mutating the\n    // `next build` output's manifest.\n    if (this.incrementalOptions.flushToDisk && !data.isNotFound) {\n      try {\n        const seedPath = this.getSeedPath(pathname, 'html')\n        await promises.mkdir(path.dirname(seedPath), { recursive: true })\n        await promises.writeFile(seedPath, data.html, 'utf8')\n        await promises.writeFile(\n          this.getSeedPath(pathname, 'json'),\n          JSON.stringify(data.pageData),\n          'utf8'\n        )\n      } catch (error) {\n        // failed to flush to disk\n        console.warn('Failed to update prerender files for', pathname, error)\n      }\n    }\n  }\n}\n"]}
+\ No newline at end of file
++{"version":3,"sources":["../../../next-server/server/incremental-cache.ts"],"names":["toRoute","pathname","replace","IncrementalCache","constructor","max","dev","distDir","pagesDir","flushToDisk","locales","incrementalOptions","prerenderManifest","cache","version","routes","dynamicRoutes","notFoundRoutes","preview","JSON","parse","path","join","PRERENDER_MANIFEST","LRUCache","length","val","isNotFound","isRedirect","html","stringify","pageData","getSeedPath","ext","getMetadataPathname","calculateRevalidate","curTime","Date","getTime","initialRevalidateSeconds","revalidateAfter","getFallback","page","promises","readFile","get","data","includes","metadata","set","_","isStale","manifestPath","manifestEntry","curRevalidate","revalidateSeconds","dataRoute","posix","srcRoute","seedPath","mkdir","dirname","recursive","writeFile","error","console","warn"],"mappings":"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","sourcesContent":["import { promises, readFileSync } from 'fs'\nimport LRUCache from 'next/dist/compiled/lru-cache'\nimport path from 'path'\nimport { PrerenderManifest } from '../../build'\nimport { PRERENDER_MANIFEST } from '../lib/constants'\nimport { normalizePagePath } from './normalize-page-path'\n\nfunction toRoute(pathname: string): string {\n  return pathname.replace(/\\/$/, '').replace(/\\/index$/, '') || '/'\n}\n\ntype IncrementalCacheValue = {\n  html?: string\n  pageData?: any\n  isStale?: boolean\n  isNotFound?: boolean\n  isRedirect?: boolean\n  curRevalidate?: number | false\n  // milliseconds to revalidate after\n  revalidateAfter: number | false\n}\n\nexport class IncrementalCache {\n  incrementalOptions: {\n    flushToDisk?: boolean\n    pagesDir?: string\n    distDir?: string\n    dev?: boolean\n  }\n\n  prerenderManifest: PrerenderManifest\n  cache: LRUCache<string, IncrementalCacheValue>\n  locales?: string[]\n\n  constructor({\n    max,\n    dev,\n    distDir,\n    pagesDir,\n    flushToDisk,\n    locales,\n  }: {\n    dev: boolean\n    max?: number\n    distDir: string\n    pagesDir: string\n    flushToDisk?: boolean\n    locales?: string[]\n  }) {\n    this.incrementalOptions = {\n      dev,\n      distDir,\n      pagesDir,\n      flushToDisk:\n        !dev && (typeof flushToDisk !== 'undefined' ? flushToDisk : true),\n    }\n    this.locales = locales\n\n    if (dev) {\n      this.prerenderManifest = {\n        version: -1 as any, // letting us know this doesn't conform to spec\n        routes: {},\n        dynamicRoutes: {},\n        notFoundRoutes: [],\n        preview: null as any, // `preview` is special case read in next-dev-server\n      }\n    } else {\n      this.prerenderManifest = JSON.parse(\n        readFileSync(path.join(distDir, PRERENDER_MANIFEST), 'utf8')\n      )\n    }\n\n    this.cache = new LRUCache({\n      // default to 50MB limit\n      max: max || 50 * 1024 * 1024,\n      length(val) {\n        if (val.isNotFound || val.isRedirect) return 25\n        // rough estimate of size of cache value\n        return val.html!.length + JSON.stringify(val.pageData).length\n      },\n    })\n  }\n\n  private getSeedPath(pathname: string, ext: string): string {\n    return path.join(this.incrementalOptions.pagesDir!, `${pathname}.${ext}`)\n  }\n\n  private getMetadataPathname(pathname: string) {\n    return `${pathname}.metadata`;\n  }\n\n  private calculateRevalidate(pathname: string): number | false {\n    pathname = toRoute(pathname)\n\n    // in development we don't have a prerender-manifest\n    // and default to always revalidating to allow easier debugging\n    const curTime = new Date().getTime()\n    if (this.incrementalOptions.dev) return curTime - 1000\n\n    const { initialRevalidateSeconds } = this.prerenderManifest.routes[\n      pathname\n    ] || {\n      initialRevalidateSeconds: 1,\n    }\n    const revalidateAfter =\n      typeof initialRevalidateSeconds === 'number'\n        ? initialRevalidateSeconds * 1000 + curTime\n        : initialRevalidateSeconds\n\n    return revalidateAfter\n  }\n\n  getFallback(page: string): Promise<string> {\n    page = normalizePagePath(page)\n    return promises.readFile(this.getSeedPath(page, 'html'), 'utf8')\n  }\n\n  // get data from cache if available\n  async get(pathname: string): Promise<IncrementalCacheValue | void> {\n    if (this.incrementalOptions.dev) return\n    pathname = normalizePagePath(pathname)\n\n    let data = this.cache.get(pathname)\n\n    // let's check the disk for seed data\n    if (!data) {\n      if (this.prerenderManifest.notFoundRoutes.includes(pathname)) {\n        return { isNotFound: true, revalidateAfter: false }\n      }\n\n      try {\n        const html = await promises.readFile(\n          this.getSeedPath(pathname, 'html'),\n          'utf8'\n        )\n        const pageData = JSON.parse(\n          await promises.readFile(this.getSeedPath(pathname, 'json'), 'utf8')\n        )\n\n        const metadata = JSON.parse(\n          await promises.readFile(\n            this.getSeedPath(this.getMetadataPathname(pathname), 'json'),\n            'utf-8'\n          )\n        )\n\n        data = {\n          html,\n          pageData,\n          revalidateAfter:\n            typeof metadata.revalidateAfter !== 'undefined'\n              ? metadata.revalidateAfter\n              : this.calculateRevalidate(pathname),\n        }\n        this.cache.set(pathname, data)\n      } catch (_) {\n        // unable to get data from disk\n      }\n    }\n\n    if (\n      data &&\n      data.revalidateAfter !== false &&\n      data.revalidateAfter < new Date().getTime()\n    ) {\n      data.isStale = true\n    }\n\n    const manifestPath = toRoute(pathname)\n    const manifestEntry = this.prerenderManifest.routes[manifestPath]\n\n    if (data && manifestEntry) {\n      data.curRevalidate = manifestEntry.initialRevalidateSeconds\n    }\n    return data\n  }\n\n  // populate the incremental cache with new data\n  async set(\n    pathname: string,\n    data: {\n      html?: string\n      pageData?: any\n      isNotFound?: boolean\n      isRedirect?: boolean\n    },\n    revalidateSeconds?: number | false\n  ) {\n    if (this.incrementalOptions.dev) return\n    if (typeof revalidateSeconds !== 'undefined') {\n      // TODO: Update this to not mutate the manifest from the\n      // build.\n      this.prerenderManifest.routes[pathname] = {\n        dataRoute: path.posix.join(\n          '/_next/data',\n          `${normalizePagePath(pathname)}.json`\n        ),\n        srcRoute: null, // FIXME: provide actual source route, however, when dynamically appending it doesn't really matter\n        initialRevalidateSeconds: revalidateSeconds,\n      }\n    }\n\n    pathname = normalizePagePath(pathname)\n\n    const metadata = {\n      revalidateAfter: this.calculateRevalidate(pathname),\n    }\n\n    this.cache.set(pathname, {\n      ...data,\n      revalidateAfter: metadata.revalidateAfter\n    })\n\n    // TODO: This option needs to cease to exist unless it stops mutating the\n    // `next build` output's manifest.\n    if (this.incrementalOptions.flushToDisk && !data.isNotFound) {\n      try {\n        const seedPath = this.getSeedPath(pathname, 'html')\n        await promises.mkdir(path.dirname(seedPath), { recursive: true })\n        await promises.writeFile(seedPath, data.html, 'utf8')\n        await promises.writeFile(\n          this.getSeedPath(pathname, 'json'),\n          JSON.stringify(data.pageData),\n          'utf8'\n        )\n        await promises.writeFile(\n          this.getSeedPath(this.getMetadataPathname(pathname), 'json'),\n          JSON.stringify(metadata),\n          'utf8'\n        )\n      } catch (error) {\n        // failed to flush to disk\n        console.warn('Failed to update prerender files for', pathname, error)\n      }\n    }\n  }\n}\n"]}
+\ No newline at end of file

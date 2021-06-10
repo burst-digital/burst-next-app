@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.npm/
 
 # testing
 /coverage
@@ -35,3 +36,6 @@ yarn-error.log*
 
 # generate
 /generated/
+
+# vscode
+.vscode/

@@ -1,3 +1,7 @@
-# Required to be able to lint.
-variables:
-  BURST_LINT: enable
+include:
+  - project: 'burstdigital/utils/burst-devtools'
+    file: '/ci-templates/project.yml'
+
+lint:
+  before_script:
+    - npm run build:production:generate

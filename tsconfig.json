@@ -3,13 +3,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@api/*": ["api/*"],
       "@components/*": ["components/*"],
       "@constants/*": ["constants/*"],
       "@generated/*": ["generated/*"],
       "@pages/*": ["pages/*"],
       "@i18n/*": ["i18n/*"],
+      "@icons/*": ["icons/*"],
+      "@lib/*": ["lib/*"],
       "@misc/*": ["misc/*"],
-      "@lib/*": ["lib/*"]
+      "@theme/*": ["theme/*"]
     },
     "resolveJsonModule": true,
     "esModuleInterop": true
@@ -23,7 +26,9 @@
     "misc",
     "lib",
     "pages",
-    "_document.tsx"
+    "api",
+    "_document.tsx",
+    "types"
   ],
   "exclude": ["node_modules"]
 }

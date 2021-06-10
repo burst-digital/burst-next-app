@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    // This shows PHP lint validation errors while editing PHP files, and fixes them on save.
+    "wongjn.php-sniffer",
+
+    // Show the right styntax highlighting for Drupal-specific file extensions.
+    "marcostazi.vs-code-drupal",
+
+    // Shows and autofixes ESLint errors (including Prettier errors).
+    "dbaeumer.vscode-eslint",
+
+    // Shows and autofixes Stylelint errors (including Prettier errors).
+    "stylelint.vscode-stylelint",
+
+    // Applies prettier fixes to all supported files.
+    "esbenp.prettier-vscode"
+  ]
+}

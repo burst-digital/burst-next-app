@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import styledNormalize from 'styled-normalize';
+import { cssVariables } from '@theme/variables';
 
 export const GlobalStyles = createGlobalStyle`
   ${styledNormalize}
@@ -13,12 +14,29 @@ export const GlobalStyles = createGlobalStyle`
       box-sizing: border-box;
    }
 
+    /* Setup theme variables */
+    ${cssVariables}
+
    /*
     * Define global typography
     */
+   html {
+    -webkit-font-smoothing: antialiased;
+     font-size: 62.5%;
+   }
+
    html,
    body {
-    -webkit-font-smoothing: antialiased;
+     font-family: var(--font-family-primary);
+     color: var(--text-color);
+   }
+
+   body {
+      font-size: 1.6rem;
+   }
+
+   #__next{
+      overflow-x: hidden;
    }
 
    /*
@@ -31,6 +49,11 @@ export const GlobalStyles = createGlobalStyle`
    h5:first-child,
    h6:first-child {
     margin-top: 0;
+   }
+
+   h1,h2,h3,h4,h5,h6{
+     font-family: var(--font-family-secondary);
+
    }
 
    img {

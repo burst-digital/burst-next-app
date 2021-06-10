@@ -20,7 +20,7 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
 ## Burst next app
 
@@ -52,13 +52,14 @@ If you are familiar with next you probably can follow, if not [check nextJS docs
 
 ## Details
 
-### Environment files
+### NextJS Patch (important!)
 
-Copy and rename `env.example.txt` to `.env.development` and `.env.production`.
+We added a Next.js patch. This patch solves a 'problem' in Next.js regarding the revalidation. We included the npm module `patch-package` which is needed to patch the Next.js module. This patch might become obsolete when Next.js updates.
+Whenever you are going to use a newer version of Next.js you must update the patch. This is achieved by running `npm patch-package next` which will update the filename of `./patches/next+10.2.3.patch`.
 
 ### GraphQL
 
-Update `codegen.yml` if needed. Currently no the WEBSITE_ORIGIN is set to cms.domain.com.
+Update `codegen.yml` if needed. Currently the WEBSITE_ORIGIN is set to cms.domain.com.
 All GraphQL related stuff is commented in the `index.tsx` page. If GraphQL is set up, it should be safe to update the query and uncomment the GraphQL related stuff.
 
 #### Example GraphQL
@@ -85,17 +86,35 @@ A page example
 import { HomepageQuery } from '@generated/graphql-request';
 import { createGraphqlRequestSdk } from '@misc/graphql-request-sdk';
 
-const sdk = createGraphqlRequestSdk(url);
-const homepage = await sdk.Homepage();
-
-export default function Homepage(props: {
+interface Props {
   homepage: HomepageQuery;
-}) {
-  return (
-  <p>{(props.homepage as any).homepage.entity.title}</p>
-  )
 }
 
+export const getStaticProps: GetStaticProps<Props> = async ctx => {
+  const sdk = createGraphqlRequestSdk(url);
+
+  const locale = ctx.locale ?? ctx.defaultLocale ?? '';
+  const localeIdentifier = resolveLocaleIdentifier(locale);
+  const path = localeIdentifier.toPath('/');
+  const redirect = await getRedirect(path, sdk);
+
+  if (redirect) {
+    return redirect;
+  }
+
+  const homepage = await sdk.Homepage();
+
+  return {
+    revalidate: DEFAULT_OVERVIEW_REVALIDATE,
+    props: {
+      homepage,
+    },
+  };
+};
+
+export default function Homepage(props: Props) {
+  return <p>{props.homepage.homepage.entity.title}</p>;
+}
 ```
 
 ### Languages
@@ -138,11 +157,72 @@ We are using a few standard aliases in our codebase. These are not allowed to be
 
 We have already set up a Theme Provider from Styled Components and a default theme in `./style-guide/default`
 
+### CSS Variables
+
+We have css variables in `./theme/variables.ts`. You can override them in classes, like this:
+
+```javascript
+export const CSSVariablesExample = styled('p')`
+  color: var(--text-color);
+
+  &.color__red {
+    --text-color: var(--color-red-900);
+  }
+
+  &.color__blue {
+    --text-color: var(--color-blue-900);
+  }
+
+  .theme__dark & {
+    --text-color: var(--color-white-100);
+
+    background-color: var(--color-black-900);
+    padding: 0.3rem;
+  }
+`;
+```
+
+### SEO
+
+We have a standard SEO block, that can be included in every page `<Metatags />`. This has a default initial value that comes from `./constants/default-metatags.ts`. Please update this to make sure pages have a correct default state. The Metatags component is used to override these values per page.
+Warning: We use different instances of <Head>, which give some problems when changing the level of nesting of <Head>.
+
 ### Misc
 
 Change the values in `./public/default/site.webmanifest`
 
-### To-do
+### Ideas to do
 
 - Determine if the Google Tag Manager should be removed ( see `./lib/react-gtm` )
+
+### Scheduled to do
+
+### Done
+
 - ~~Add an example environment file~~
+- ~~Add default meta tags~~
+- ~~Add favicon~~
+- ~~Add default SEO block~~
+- ~~Add a robots.txt~~
+- ~~Add a /images/share-image.jpg~~
+- ~~Revalidation and Revalidation patch for nextjs~~
+- ~~Sitemaps (api endpoint)~~
+- ~~Implement a working example of css variables and add top-level theme overrides~~
+- ~~Example for Google Fonts~~
+- ~~Conditional Wrapper~~
+- ~~React GTM~~
+- ~~InternalExternalLink~~
+- ~~SVGs~~
+- ~~Sluggify function~~
+- ~~useClientSideState~~
+- ~~Middleware runner~~
+- ~~GraphQL (api endpoint)~~
+- ~~Breadcrumb~~
+- ~~Redirect helper~~
+- ~~404~~
+- ~~Cookiebar~~
+- ~~Performance marks~~
+
+### Won't do
+
+- We will not implement a state management solution as of now. This is too complex and is usually dependant of the type of project.
