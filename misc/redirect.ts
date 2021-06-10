@@ -1,11 +1,12 @@
-import { createGraphqlRequestSdk } from './graphql-request-sdk';
+// import { createGraphqlRequestSdk } from './graphql-request-sdk';
 
-export async function getRedirect(
-  path: string,
-  sdk: ReturnType<typeof createGraphqlRequestSdk>,
-) {
+export async function getRedirect() {
+  // path: string,
+  // sdk: ReturnType<typeof createGraphqlRequestSdk>,
   try {
-    const result = await sdk.Redirect({ path });
+    // const result = await sdk.Redirect({ path });
+
+    const result = { redirect: { target: '/dest', status: 301 } };
 
     if (result.redirect) {
       return {

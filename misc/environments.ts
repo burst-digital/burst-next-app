@@ -15,7 +15,9 @@ export function getDevRevalidate() {
 
 export function getCmsUrl() {
   return (
-    process.env.WEBSITE_CMS_URL || process.env.NEXT_PUBLIC_WEBSITE_CMS_URL || 'https://www.domain.com'
+    process.env.WEBSITE_CMS_URL ||
+    process.env.NEXT_PUBLIC_WEBSITE_CMS_URL ||
+    'https://www.domain.com'
   );
 }
 

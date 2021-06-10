@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { isClient } from './is-environment';
+import { isClient } from '../../misc/is-environment';
 
 export function useClientSideState<P>(
   initialState: P | null,

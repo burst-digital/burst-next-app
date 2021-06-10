@@ -3,5 +3,5 @@ Allow: /
 Allow: /api/sitemaps/
 Disallow: /api/
 
-Sitemap: /api/sitemaps/cms.xml
-Sitemap: /api/sitemaps/static.xml
+Sitemap: https://www.domain.com/api/sitemaps/cms.xml
+Sitemap: https://www.domain.com/api/sitemaps/static.xml

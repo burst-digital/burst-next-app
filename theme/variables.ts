@@ -44,7 +44,7 @@ export const cssVariables = css`
     --spacing-20x: 8rem;
     --spacing-24x: 9.6rem;
     --spacing-30x: 12rem;
-  
+
     /* Global variables */
     --text-color: var(--color-black-900);
   }

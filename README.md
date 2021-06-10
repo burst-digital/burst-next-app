@@ -90,7 +90,7 @@ interface Props {
   homepage: HomepageQuery;
 }
 
-export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
+export const getStaticProps: GetStaticProps<Props> = async ctx => {
   const sdk = createGraphqlRequestSdk(url);
 
   const locale = ctx.locale ?? ctx.defaultLocale ?? '';
@@ -156,6 +156,31 @@ We are using a few standard aliases in our codebase. These are not allowed to be
 ### Theming
 
 We have already set up a Theme Provider from Styled Components and a default theme in `./style-guide/default`
+
+### CSS Variables
+
+We have css variables in `./theme/variables.ts`. You can override them in classes, like this:
+
+```javascript
+export const CSSVariablesExample = styled('p')`
+  color: var(--text-color);
+
+  &.color__red {
+    --text-color: var(--color-red-900);
+  }
+
+  &.color__blue {
+    --text-color: var(--color-blue-900);
+  }
+
+  .theme__dark & {
+    --text-color: var(--color-white-100);
+
+    background-color: var(--color-black-900);
+    padding: 0.3rem;
+  }
+`;
+```
 
 ### SEO
 

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { getSdk } from '@generated/graphql-request';
 import { GraphQLClient } from 'graphql-request';
 

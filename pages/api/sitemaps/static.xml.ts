@@ -28,7 +28,6 @@ export default async function(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
       return res.status(405).end();
     }
-    console.log(getCmsUrl());
 
     const url = resolveApiUrl(new URL(getCmsUrl()), { www: true });
 
@@ -58,9 +57,6 @@ export default async function(req: NextApiRequest, res: NextApiResponse) {
       throw e;
     });
   } catch (error) {
-    console.log(error);
-
-
     return res.status(400).json({ error });
   }
 }

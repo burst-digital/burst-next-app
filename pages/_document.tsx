@@ -10,6 +10,7 @@ import { Head as GtmHead, Body as GtmBody } from '@lib/react-gtm';
 import { ServerStyleSheet } from 'styled-components';
 import resolveGtmContainerId from '@misc/resolve-gtm-container-id';
 import PerformanceMark from '@lib/react-performance-api/performance-mark/Component';
+import Fonts from '@components/molecules/Fonts/Component';
 
 // Refer to: https://github.com/vercel/next.js/blob/master/examples/with-styled-components/pages/_document.js
 export default class MyDocument extends Document {
@@ -20,8 +21,7 @@ export default class MyDocument extends Document {
     try {
       ctx.renderPage = () =>
         originalRenderPage({
-          enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
+          enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
         });
 
       const initialProps = await Document.getInitialProps(ctx);
@@ -59,34 +59,11 @@ export default class MyDocument extends Document {
           <PerformanceMark name="gtm-end" />
 
           <PerformanceMark name="fonts-start" />
-
-          <PerformanceMark name="local-fonts-preload-start" />
-          <link
-            rel="preload"
-            href="fonts/AvenirNext-Regular.woff"
-            as="font"
-            type="font/woff"
-            crossOrigin="anonymous"
-          />
-          <link
-            rel="preload"
-            href="fonts/AvenirNext-Regular.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <PerformanceMark name="local-fonts-preload-end" />
-
           <PerformanceMark name="local-fonts-start" />
-          <link href="./fonts/fonts.css" rel="stylesheet" />
+          <Fonts />
           <PerformanceMark name="local-fonts-end" />
 
           <PerformanceMark name="google-fonts-start" />
-          <link
-            rel="preload"
-            href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
-            as="style"
-          />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto&display=swap"

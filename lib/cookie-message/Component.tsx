@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import * as styled from './styles';
-import { useKlot } from '@i18n/translate';
 
 enum CookieValue {
   OPTIMAL = 'optimal',
@@ -15,7 +14,20 @@ enum CookieStep {
   SECOND,
 }
 
-
+function CookieMessageContent() {
+  return (
+    <>
+      <h4 className="cookie-message__title">cookie-bar-title</h4>
+      <small className="cookie-message__intro">
+        cookie-bar-description{' '}
+        <a href="/">
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          <a className="cookie-message__intro-link">check-cookie-policy</a>
+        </a>
+      </small>
+    </>
+  );
+}
 
 export function CookieMessage() {
   const cookieName = 'default-cookie-title';
@@ -25,43 +37,14 @@ export function CookieMessage() {
   );
   const [cookieStep, setCookieStep] = useState<CookieStep>(CookieStep.FIRST);
   const router = useRouter();
-  const t = useKlot();
 
   const submitCookie = (value: CookieValue = CookieValue.RESTRICTED) => {
     setCookie(cookieName, value, { path: '/' });
     router.push(router.asPath);
   };
 
-  useEffect(() => {
-    router.events.on('routeChangeComplete', (evt) =>
-      trackGA(evt, cookies[cookieName]),
-    );
-    return () => {
-      router.events.off('routeChangeComplete', (evt) =>
-        trackGA(evt, cookies[cookieName]),
-      );
-    };
-  }, [router.events, cookies]);
-
   if (cookies[cookieName]) {
     return null;
-  }
-
-  function CookieMessageContent() {
-    return (
-      <>
-        <h4 className="cookie-message__title">{t('cookie-bar-title')}</h4>
-        <small className="cookie-message__intro">
-          {t('cookie-bar-message')}{' '}
-          <a href="/">
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <a className="cookie-message__intro-link">
-              {t('check-cookie-policy')}
-            </a>
-          </a>
-        </small>
-      </>
-    );
   }
 
   return (
@@ -75,24 +58,17 @@ export function CookieMessage() {
         {CookieMessageContent()}
         <div>
           <button
-            className="cookie-message__step-button cookie-message__step-button--mobile-only"
-            type="button"
-            onClick={() => setCookieStep(CookieStep.SECOND)}
-          >
-            {t('check-cookie-options')}
-          </button>
-          <button
             type="submit"
             onClick={() => submitCookie(CookieValue.RESTRICTED)}
           >
-            {t('accept-cookies')}
+            accept-cookies
           </button>
           <button
-            className="cookie-message__step-button cookie-message__step-button--tablet"
+            className="cookie-message__step-button"
             type="button"
             onClick={() => setCookieStep(CookieStep.SECOND)}
           >
-            {t('check-cookie-options')}
+            check-cookie-options
           </button>
         </div>
       </div>
@@ -112,7 +88,8 @@ export function CookieMessage() {
               onChange={() => setActiveCookieOption(CookieValue.RESTRICTED)}
             />
             <small>
-              <b>{t('cookie-bar-option-limited')}.</b> {t('cookie-bar-option-limited-description')}
+              <b>cookie-bar-option-limited.</b>{' '}
+              cookie-bar-option-limited-description
             </small>
           </div>
           <div>
@@ -123,31 +100,18 @@ export function CookieMessage() {
               onChange={() => setActiveCookieOption(CookieValue.OPTIMAL)}
             />
             <small>
-              <b>{t('cookie-bar-option-optimal')}.</b> {t('cookie-bar-option-optimal-description')}
+              <b>cookie-bar-option-optimal.</b>{' '}
+              cookie-bar-option-optimal-description
             </small>
           </div>
           <button
             type="submit"
             onClick={() => submitCookie(activeCookieOption)}
           >
-            {t('accept-cookies')}
+            accept-cookies
           </button>
         </form>
       </div>
     </styled.CookieMessage>
   );
-}
-
-function trackGA(page: any, action: CookieValue) {
-  if (
-    typeof window === 'object' &&
-    window.dataLayer &&
-    Array.isArray(window.dataLayer)
-  ) {
-    window.dataLayer.push({
-      event: 'cookie_bar_opt_in',
-      page,
-      action,
-    });
-  }
 }
